@@ -4,151 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arquivo Inteligente</title>
-    <style>
-        :root {
-            --apple-blue: #007aff;
-            --apple-blue-hover: #006ce0;
-            --apple-green: #34c759;
-            --apple-green-hover: #2eb050;
-            --apple-red: #ff3b30;
-            --apple-red-bg: #ffe5e5;
-            --bg-color: #f5f5f7;
-            --card-bg: rgba(255, 255, 255, 0.82);
-            --input-bg: rgba(255, 255, 255, 0.9);
-            --border-color: #d2d2d7;
-            --text-primary: #1d1d1f;
-            --text-secondary: #86868b;
-        }
-
-        * {
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: var(--text-primary);
-        }
-
-        .container {
-            background: var(--card-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 24px;
-            padding: 32px 28px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-            text-align: center;
-        }
-
-        h2 { margin-top: 0; font-weight: 600; font-size: 24px; }
-        .subtitle { color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; }
-
-        input, select {
-            width: 100%;
-            padding: 14px 16px;
-            margin-bottom: 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 16px;
-            background: var(--input-bg);
-            color: var(--text-primary);
-            outline: none;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--apple-blue);
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
-            background: #ffffff;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 10px;
-            background-color: var(--apple-blue);
-            color: #ffffff;
-            transition: transform 0.15s, background-color 0.2s;
-        }
-
-        button:hover { background-color: var(--apple-blue-hover); }
-        button:active { transform: scale(0.97); }
-
-        .btn-novo { background-color: var(--apple-green); }
-        .btn-novo:hover { background-color: var(--apple-green-hover); }
-        .btn-secundario { background-color: #e5e5ea; color: var(--text-primary); }
-        .btn-secundario:hover { background-color: #d1d1d6; }
-        .btn-perigo { background-color: var(--apple-red-bg); color: var(--apple-red); }
-        .btn-perigo:hover { background-color: #ffd1d1; }
-        .voltar-btn { background: none; color: var(--apple-blue); text-align: left; padding: 0; margin-bottom: 16px; width: auto; font-size: 14px; }
-
-        .checkbox-group { display: flex; align-items: center; margin-bottom: 12px; text-align: left; }
-        .checkbox-group input { width: 20px; height: 20px; margin-right: 12px; accent-color: var(--apple-blue); }
-        .checkbox-group label { font-size: 14px; color: var(--text-primary); cursor: pointer; }
-
-        /* --- FORMATO DE IMPRESSÃO (ESPELHO) --- */
-        .print-only { display: none; }
-
-        @media print {
-            body { background: #ffffff; margin: 0; padding: 0; }
-            .container { display: none !important; }
-            
-            .print-only {
-                display: flex !important;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                width: 100vw;
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-            
-            .print-card {
-                border: 3px solid #233e60;
-                border-radius: 20px;
-                padding: 36px;
-                text-align: center;
-                width: 360px;
-                font-family: Arial, sans-serif;
-                page-break-inside: avoid;
-            }
-
-            .print-header { font-size: 13px; color: #8fa3b8; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
-            .print-title { font-size: 38px; color: #1e3a5f; font-weight: bold; margin: 12px 0; }
-
-            .print-local-box {
-                background: #f0f4f8 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                padding: 16px;
-                border-radius: 12px;
-                font-size: 14px;
-                color: #333333;
-                margin-bottom: 20px;
-                text-align: left;
-                line-height: 1.6;
-                border: 1px solid #d1d9e6;
-            }
-
-            .print-qr-container img { width: 170px; height: 170px; }
-            .print-footer { font-size: 13px; font-weight: bold; color: #5a6b7c; margin-top: 18px; }
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -167,7 +23,7 @@
     <!-- 2. DASHBOARD -->
     <div class="container" id="dashboard-screen" style="display: none;">
         <h2>Dashboard</h2>
-        <input type="text" id="busca-global" placeholder="🔍 Buscar cliente por nome ou CPF..." onkeyup="pesquisarGlobal()">
+        <input type="text" id="busca-global" placeholder="🔍 Buscar por nome, CPF ou processo..." onkeyup="pesquisarGlobal()">
         
         <div id="resultados-busca" style="display: none; margin-bottom: 20px;"></div>
         
@@ -195,11 +51,11 @@
         <button class="btn-secundario" onclick="voltarParaDashboard()">Cancelar</button>
     </div>
 
-    <!-- 4. DENTRO DA PASTA (Lista de Clientes e Busca Interna) -->
+    <!-- 4. DENTRO DA PASTA -->
     <div class="container" id="app-screen" style="display: none;">
         <button class="voltar-btn" onclick="sair()">← Voltar ao Dashboard</button>
         <h2 id="titulo-pasta">PASTA-001</h2>
-        <p class="subtitle">Gerencie os clientes contidos neste arquivo.</p>
+        <p class="subtitle">Gerencie os documentos contidos neste arquivo.</p>
         
         <div style="display: flex; gap: 8px; margin-bottom: 15px;">
             <button class="btn-secundario" onclick="abrirEditarPasta()">✏️ Editar</button>
@@ -207,27 +63,11 @@
             <button class="btn-perigo" id="btn-excluir-pasta" onclick="excluirPasta()">🗑️ Excluir</button>
         </div>
 
-        <!-- CAMPO DE BUSCA INTERNO DA PASTA (Para pesquisa rápida via QR Code) -->
-        <input type="text" id="busca-cliente-pasta" placeholder="🔍 Filtrar cliente nesta pasta..." onkeyup="filtrarClientesDaPasta()">
+        <input type="text" id="busca-cliente-pasta" placeholder="🔍 Filtrar nesta pasta..." onkeyup="filtrarClientesDaPasta()">
 
         <div id="lista-clientes" style="margin-bottom: 20px;"></div>
 
         <button class="btn-novo" onclick="abrirCadastroCliente()">+ Adicionar Cliente</button>
-    </div>
-
-    <!-- 5. EDITAR PASTA (CRUD Completo de Informações Físicas) -->
-    <div class="container" id="editar-pasta-screen" style="display: none;">
-        <h2>Editar Pasta</h2>
-        <p class="subtitle" id="ep-nome-atual"></p>
-        
-        <input type="text" id="ep-id" placeholder="ID da Pasta (ex: PASTA-001)" style="text-transform: uppercase;">
-        <input type="text" id="ep-endereco" placeholder="Endereço / Prédio">
-        <input type="text" id="ep-andar" placeholder="Andar / Sala">
-        <input type="text" id="ep-caixa" placeholder="Nome da Caixa">
-        <input type="number" id="ep-numero" placeholder="Número da Caixa">
-        
-        <button class="btn-novo" onclick="salvarEdicaoPasta()">Salvar Alterações</button>
-        <button class="btn-secundario" onclick="voltarParaPasta()">Cancelar</button>
     </div>
 
     <!-- 5. EDITAR PASTA -->
@@ -235,7 +75,11 @@
         <h2>Editar Pasta</h2>
         <p class="subtitle" id="ep-nome-atual"></p>
         
-        <input type="text" id="ep-id" placeholder="Novo ID da Pasta" style="text-transform: uppercase;">
+        <input type="text" id="ep-id" placeholder="ID da Pasta" style="text-transform: uppercase;">
+        <input type="text" id="ep-endereco" placeholder="Endereço / Prédio">
+        <input type="text" id="ep-andar" placeholder="Andar / Sala">
+        <input type="text" id="ep-caixa" placeholder="Nome da Caixa">
+        <input type="number" id="ep-numero" placeholder="Número da Caixa">
         
         <button class="btn-novo" onclick="salvarEdicaoPasta()">Salvar Alterações</button>
         <button class="btn-secundario" onclick="voltarParaPasta()">Cancelar</button>
@@ -248,6 +92,8 @@
         
         <input type="text" id="nc-nome" placeholder="Nome Completo">
         <input type="text" id="nc-cpf" placeholder="CPF">
+        <input type="text" id="nc-processo" placeholder="Nº do Processo">
+        <input type="date" id="nc-data">
         
         <button class="btn-novo" onclick="salvarNovoCliente()">Salvar Cliente</button>
         <button class="btn-secundario" onclick="voltarParaPastaDeCliente()">Cancelar</button>
@@ -257,9 +103,11 @@
     <div class="container" id="editar-cliente-screen" style="display: none;">
         <h2>Editar Cliente</h2>
         
-        <input type="hidden" id="ec-cpf-antigo">
+        <input type="hidden" id="ec-id-firebase">
         <input type="text" id="ec-nome" placeholder="Nome Completo">
         <input type="text" id="ec-cpf" placeholder="CPF">
+        <input type="text" id="ec-processo" placeholder="Nº do Processo">
+        <input type="date" id="ec-data">
         
         <button class="btn-novo" onclick="salvarEdicaoCliente()">Salvar Alterações</button>
         <button class="btn-secundario" onclick="voltarParaPastaDeCliente()">Cancelar</button>
@@ -302,23 +150,19 @@
         <div id="lista-usuarios" style="text-align: left;"></div>
     </div>
 
-    <!-- ÁREA DE IMPRESSÃO (ESPELHO COM VISUAL PREMUM) -->
+    <!-- ÁREA DE IMPRESSÃO (ESPELHO) -->
     <div class="print-only" id="print-area">
         <div class="print-card">
             <div class="print-header">Arquivo Inteligente</div>
-            
             <div class="print-title" id="print-pasta-id"></div>
-            
             <div class="print-local-box">
                 <div id="print-endereco"></div>
                 <div id="print-andar"></div>
                 <div id="print-caixa"></div>
             </div>
-            
             <div class="print-qr-container">
                 <img id="print-qr" src="" alt="QR Code">
             </div>
-            
             <div class="print-footer">Controle de Ativos Físicos</div>
         </div>
     </div>
@@ -327,6 +171,12 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     
-    <script src="js/app.js"></script>
+    <!-- SCRIPTS MODULARES -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/pastas.js"></script>
+    <script src="js/clientes.js"></script>
+    <script src="js/usuarios.js"></script>
+    <script src="js/print.js"></script>
 </body>
 </html>
