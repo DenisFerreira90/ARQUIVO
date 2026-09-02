@@ -2,9 +2,6 @@
 // ARQUIVO INTELIGENTE - AUTENTICAÇÃO E INICIALIZAÇÃO
 // =========================================================
 
-// Evita o erro de re-declaração caso a variável já exista no config.js
-var usuarioLogado = window.usuarioLogado || null;
-
 window.onload = function() {
     // 1. Captura os parâmetros da URL para leitura via QR Code
     const params = new URLSearchParams(window.location.search);
@@ -30,21 +27,21 @@ window.onload = function() {
     // 2. Fluxo Normal de Login (Se NÃO for leitura de QR Code)
     const usuarioSalvo = localStorage.getItem('usuarioLogadoAI');
     if (usuarioSalvo) {
-        usuarioLogado = JSON.parse(usuarioSalvo);
+        window.usuarioLogado = JSON.parse(usuarioSalvo);
         
         const loginEl = document.getElementById('login-screen');
         if (loginEl) loginEl.style.display = 'none';
         
         const btnConfig = document.getElementById('btn-configuracoes');
-        if (btnConfig) btnConfig.style.display = usuarioLogado.permAdmin ? 'block' : 'none';
+        if (btnConfig) btnConfig.style.display = window.usuarioLogado.permAdmin ? 'block' : 'none';
         
         const btnAuditoria = document.getElementById('btn-auditoria');
-        if (btnAuditoria) btnAuditoria.style.display = usuarioLogado.permAdmin ? 'block' : 'none';
+        if (btnAuditoria) btnAuditoria.style.display = window.usuarioLogado.permAdmin ? 'block' : 'none';
         
         const btnExcluirP = document.getElementById('btn-excluir-pasta');
-        if (btnExcluirP) btnExcluirP.style.display = (usuarioLogado.permAdmin || usuarioLogado.permExcluirPasta) ? 'block' : 'none';
+        if (btnExcluirP) btnExcluirP.style.display = (window.usuarioLogado.permAdmin || window.usuarioLogado.permExcluirPasta) ? 'block' : 'none';
         
-        iniciarSistema();
+        if (typeof iniciarSistema === 'function') iniciarSistema();
     }
 };
 
@@ -71,24 +68,24 @@ function fazerLogin() {
         btnLogin.innerText = "Entrar";
 
         if (doc.exists && doc.data().senha === senha) {
-            usuarioLogado = { login: user, ...doc.data() };
+            window.usuarioLogado = { login: user, ...doc.data() };
             
             // Salva a sessão no navegador para evitar logout no F5
-            localStorage.setItem('usuarioLogadoAI', JSON.stringify(usuarioLogado));
+            localStorage.setItem('usuarioLogadoAI', JSON.stringify(window.usuarioLogado));
             
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('senha').value = '';
             
             const btnConfig = document.getElementById('btn-configuracoes');
-            if (btnConfig) btnConfig.style.display = usuarioLogado.permAdmin ? 'block' : 'none';
+            if (btnConfig) btnConfig.style.display = window.usuarioLogado.permAdmin ? 'block' : 'none';
             
             const btnAuditoria = document.getElementById('btn-auditoria');
-            if (btnAuditoria) btnAuditoria.style.display = usuarioLogado.permAdmin ? 'block' : 'none';
+            if (btnAuditoria) btnAuditoria.style.display = window.usuarioLogado.permAdmin ? 'block' : 'none';
             
             const btnExcluirP = document.getElementById('btn-excluir-pasta');
-            if (btnExcluirP) btnExcluirP.style.display = (usuarioLogado.permAdmin || usuarioLogado.permExcluirPasta) ? 'block' : 'none';
+            if (btnExcluirP) btnExcluirP.style.display = (window.usuarioLogado.permAdmin || window.usuarioLogado.permExcluirPasta) ? 'block' : 'none';
             
-            iniciarSistema();
+            if (typeof iniciarSistema === 'function') iniciarSistema();
         } else {
             msgErro.innerText = "Usuário ou senha incorretos.";
             msgErro.style.display = 'block';
@@ -103,7 +100,7 @@ function fazerLogin() {
 function sair() {
     // Apaga a memória ao encerrar a sessão
     localStorage.removeItem('usuarioLogadoAI');
-    usuarioLogado = null;
+    window.usuarioLogado = null;
     
     document.getElementById('app-screen').style.display = 'none';
     document.getElementById('config-screen').style.display = 'none';
