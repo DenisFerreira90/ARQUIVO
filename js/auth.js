@@ -1,26 +1,39 @@
+// =========================================================
+// ARQUIVO INTELIGENTE - AUTENTICAÇÃO E INICIALIZAÇÃO
+// =========================================================
+
+// Evita o erro de re-declaração caso a variável já exista no config.js
+var usuarioLogado = window.usuarioLogado || null;
+
 window.onload = function() {
-    // 1. Verifica se é um acesso via QR Code (tem ID na URL)
+    // 1. Captura os parâmetros da URL para leitura via QR Code
     const params = new URLSearchParams(window.location.search);
     let idDaPasta = params.get('id') || params.get('pasta') || window.location.hash.replace('#', '');
     const caminho = window.location.pathname.replace('/', '');
     
-    if (!idDaPasta && caminho && caminho.length > 2 && !caminho.includes('.html')) {
+    if (!idDaPasta && caminho && caminho.length > 2 && !caminho.includes('.html') && caminho !== 'index') {
         idDaPasta = caminho;
     }
 
+    // Se detectou um ID na URL, abre a tela pública de leitura
     if (idDaPasta) {
-        // MODO PÚBLICO: Oculta o login e mostra a consulta
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('public-screen').style.display = 'block';
+        const loginEl = document.getElementById('login-screen');
+        const publicEl = document.getElementById('public-screen');
+        
+        if (loginEl) loginEl.style.display = 'none';
+        if (publicEl) publicEl.style.display = 'block';
+        
         carregarDadosPublicos(idDaPasta);
-        return; // Interrompe o código aqui
+        return; // Interrompe a execução para não abrir a tela de login
     }
 
-    // 2. Fluxo Normal (Se não for QR Code, verifica se já tem login salvo)
+    // 2. Fluxo Normal de Login (Se NÃO for leitura de QR Code)
     const usuarioSalvo = localStorage.getItem('usuarioLogadoAI');
     if (usuarioSalvo) {
         usuarioLogado = JSON.parse(usuarioSalvo);
-        document.getElementById('login-screen').style.display = 'none';
+        
+        const loginEl = document.getElementById('login-screen');
+        if (loginEl) loginEl.style.display = 'none';
         
         const btnConfig = document.getElementById('btn-configuracoes');
         if (btnConfig) btnConfig.style.display = usuarioLogado.permAdmin ? 'block' : 'none';
@@ -60,7 +73,7 @@ function fazerLogin() {
         if (doc.exists && doc.data().senha === senha) {
             usuarioLogado = { login: user, ...doc.data() };
             
-            // Salva o usuário no navegador para não deslogar no F5
+            // Salva a sessão no navegador para evitar logout no F5
             localStorage.setItem('usuarioLogadoAI', JSON.stringify(usuarioLogado));
             
             document.getElementById('login-screen').style.display = 'none';
@@ -88,7 +101,7 @@ function fazerLogin() {
 }
 
 function sair() {
-    // Apaga a memória ao sair voluntariamente
+    // Apaga a memória ao encerrar a sessão
     localStorage.removeItem('usuarioLogadoAI');
     usuarioLogado = null;
     
@@ -96,6 +109,10 @@ function sair() {
     document.getElementById('config-screen').style.display = 'none';
     document.getElementById('auditoria-screen').style.display = 'none';
     document.getElementById('dashboard-screen').style.display = 'none';
+    
+    const publicEl = document.getElementById('public-screen');
+    if (publicEl) publicEl.style.display = 'none';
+    
     document.getElementById('login-screen').style.display = 'block';
     
     const buscaInput = document.getElementById('busca-global');
