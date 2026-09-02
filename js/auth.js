@@ -29,6 +29,9 @@ function fazerLogin() {
             const btnConfig = document.getElementById('btn-configuracoes');
             if (btnConfig) btnConfig.style.display = usuarioLogado.permAdmin ? 'block' : 'none';
             
+            const btnAuditoria = document.getElementById('btn-auditoria');
+            if (btnAuditoria) btnAuditoria.style.display = usuarioLogado.permAdmin ? 'block' : 'none';
+            
             const btnExcluirP = document.getElementById('btn-excluir-pasta');
             if (btnExcluirP) btnExcluirP.style.display = (usuarioLogado.permAdmin || usuarioLogado.permExcluirPasta) ? 'block' : 'none';
             
@@ -47,7 +50,9 @@ function fazerLogin() {
 function sair() {
     document.getElementById('app-screen').style.display = 'none';
     document.getElementById('config-screen').style.display = 'none';
+    document.getElementById('auditoria-screen').style.display = 'none';
     document.getElementById('dashboard-screen').style.display = 'block';
+    
     const buscaInput = document.getElementById('busca-global');
     if (buscaInput) {
         buscaInput.value = '';

@@ -9,7 +9,7 @@ function desenharPastas() {
 
     memoriaDoSistema.pastas.sort().forEach(nomePasta => {
         html += `
-        <div class="card-item" style="cursor: pointer; font-weight: 600; color: var(--apple-blue);" onclick="abrirTelaPasta('${nomePasta}')">
+        <div class="card-item" style="cursor: pointer; font-weight: 600; color: var(--primary);" onclick="abrirTelaPasta('${nomePasta}')">
             📁 ${nomePasta}
         </div>`;
     });
@@ -29,6 +29,7 @@ function limparFormularioNovaPasta() {
     document.getElementById('np-andar').value = '';
     document.getElementById('np-caixa').value = '';
     document.getElementById('np-numero').value = '';
+    document.getElementById('np-obs').value = '';
 }
 
 function voltarParaDashboard() {
@@ -47,8 +48,10 @@ function salvarNovaPasta() {
         andar: document.getElementById('np-andar').value.trim(),
         caixa: document.getElementById('np-caixa').value.trim(),
         numero: document.getElementById('np-numero').value.trim(),
+        obs: document.getElementById('np-obs').value.trim(),
         status: "ATIVO",
-        criadoPor: usuarioLogado ? usuarioLogado.login : 'sistema'
+        criadoPor: usuarioLogado ? usuarioLogado.login : 'sistema',
+        dataCriacao: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
         gerarImpressao(id);
         voltarParaDashboard();
@@ -69,6 +72,7 @@ function abrirEditarPasta() {
             document.getElementById('ep-andar').value = dados.andar || '';
             document.getElementById('ep-caixa').value = dados.caixa || '';
             document.getElementById('ep-numero').value = dados.numero || '';
+            document.getElementById('ep-obs').value = dados.obs || '';
         }
     });
 }
@@ -88,13 +92,18 @@ function salvarEdicaoPasta() {
         andar: document.getElementById('ep-andar').value.trim(),
         caixa: document.getElementById('ep-caixa').value.trim(),
         numero: document.getElementById('ep-numero').value.trim(),
+        obs: document.getElementById('ep-obs').value.trim(),
         status: "ATIVO",
-        atualizadoPor: usuarioLogado ? usuarioLogado.login : 'sistema'
+        atualizadoPor: usuarioLogado ? usuarioLogado.login : 'sistema',
+        dataAtualizacao: firebase.firestore.FieldValue.serverTimestamp()
     };
 
     if (novoId !== nomeAtual) {
         db.collection("pastas").doc(novoId).set(dadosAtualizados).then(() => {
-            db.collection("pastas").doc(nomeAtual).update({ status: "EXCLUÍDO" });
+            db.collection("pastas").doc(nomeAtual).update({ 
+                status: "EXCLUÍDO",
+                dataExclusao: firebase.firestore.FieldValue.serverTimestamp()
+            });
             memoriaDoSistema.clientes.filter(c => c.pasta === nomeAtual).forEach(c => {
                 db.collection("clientes").doc(c.idFirebase).update({ pasta: novoId });
             });
@@ -117,7 +126,8 @@ function excluirPasta() {
     if (confirm(`Excluir a ${nomeDaPasta}?`)) {
         db.collection("pastas").doc(nomeDaPasta).update({ 
             status: "EXCLUÍDO", 
-            excluidoPor: usuarioLogado ? usuarioLogado.login : 'sistema' 
+            excluidoPor: usuarioLogado ? usuarioLogado.login : 'sistema',
+            dataExclusao: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => sair());
     }
 }
