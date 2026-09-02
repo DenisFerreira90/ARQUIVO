@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Arquivo</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container" style="max-width: 500px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <p class="subtitle" style="margin-bottom: 5px;">ARQUIVO INTELIGENTE</p>
+            <h2 id="pub-titulo-pasta" style="font-size: 32px; color: var(--primary);">Carregando...</h2>
+        </div>
+
+        <div class="card-item" style="flex-direction: column; align-items: flex-start; background: var(--bg-color); border: none; margin-bottom: 20px;">
+            <div id="pub-endereco" class="info-detalhe" style="color: var(--text-main); font-size: 14px;"></div>
+            <div id="pub-andar" class="info-detalhe" style="color: var(--text-main); font-size: 14px;"></div>
+            <div id="pub-caixa" class="info-detalhe" style="color: var(--text-main); font-size: 14px;"></div>
+            <div id="pub-obs" class="info-detalhe" style="color: var(--danger); font-weight: 600; display: none; margin-top: 10px;"></div>
+        </div>
+
+        <input type="text" id="pub-busca" placeholder="🔍 Buscar cliente, CPF ou processo..." onkeyup="filtrarListaPublica()">
+
+        <div id="pub-lista-clientes" style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 5px; margin-top: 15px;">
+            <p style="text-align: center; color: var(--text-muted);">Buscando documentos em tempo real...</p>
+        </div>
+    </div>
+
+    <!-- SDKs FIREBASE COMPAT -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    
+    <script src="js/config.js"></script>
+    <script src="js/publico.js"></script>
+</body>
+</html>

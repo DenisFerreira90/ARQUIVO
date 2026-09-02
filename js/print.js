@@ -1,28 +1,35 @@
-function imprimirEspelho() {
-    gerarImpressao(document.getElementById('titulo-pasta').innerText);
+function gerarImpressao(id) {
+    db.collection("pastas").doc(id).get().then(doc => {
+        if (doc.exists) {
+            preencherEImprimir(id, doc.data());
+        }
+    });
 }
 
-function gerarImpressao(pasta) {
-    db.collection("pastas").doc(pasta).get().then(doc => {
-        let endereco = "N/A", andar = "N/A", caixa = "N/A", numero = "N/A";
-        
+function imprimirEspelho() {
+    const id = document.getElementById('titulo-pasta').innerText;
+    db.collection("pastas").doc(id).get().then(doc => {
         if (doc.exists) {
-            const dados = doc.data();
-            endereco = dados.endereco || "N/A";
-            andar = dados.andar || "N/A";
-            caixa = dados.caixa || "N/A";
-            numero = dados.numero || "N/A";
+            preencherEImprimir(id, doc.data());
         }
-
-        document.getElementById('print-pasta-id').innerText = pasta;
-        document.getElementById('print-endereco').innerHTML = `<b>Endereço:</b> ${endereco}`;
-        document.getElementById('print-andar').innerHTML = `<b>Andar/Sala:</b> ${andar}`;
-        document.getElementById('print-caixa').innerHTML = `<b>Caixa:</b> ${caixa} &nbsp;&nbsp; <b>Nº:</b> ${numero}`;
-
-        const linkApp = window.location.origin + window.location.pathname + "?pasta=" + pasta;
-        const imgQr = document.getElementById('print-qr');
-        imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(linkApp)}`;
-        
-        imgQr.onload = () => window.print();
     });
+}
+
+function preencherEImprimir(id, dados) {
+    document.getElementById('print-pasta-id').innerText = id;
+    document.getElementById('print-endereco').innerHTML = `<b>Endereço:</b> ${dados.endereco || 'N/A'}`;
+    document.getElementById('print-andar').innerHTML = `<b>Andar/Sala:</b> ${dados.andar || 'N/A'}`;
+    document.getElementById('print-caixa').innerHTML = `<b>Caixa:</b> ${dados.caixa || 'N/A'} &nbsp;&nbsp; <b>Nº:</b> ${dados.numero || 'N/A'}`;
+    
+    // Gera o link público apontando para o arquivo pasta.html que criamos
+    const baseUrl = window.location.origin; 
+    const urlPublica = `${baseUrl}/pasta.html?id=${encodeURIComponent(id)}`;
+    
+    // Cria a imagem do QR Code
+    document.getElementById('print-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlPublica)}`;
+    
+    // Aguarda meio segundo para a imagem do QR Code carregar na tela antes de abrir a janela de impressão
+    setTimeout(() => {
+        window.print();
+    }, 500);
 }

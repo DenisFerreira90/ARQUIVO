@@ -1,36 +1,48 @@
+/* =========================================
+   ARQUIVO INTELIGENTE - PREMIUM GLASSMORPHISM
+   ========================================= */
+
 :root {
-    --apple-blue: #007aff;
-    --apple-blue-hover: #006ce0;
-    --apple-green: #34c759;
-    --apple-green-hover: #2eb050;
-    --apple-red: #ff3b30;
-    --apple-red-bg: #ffe5e5;
+    /* Paleta de Cores Premium (Apple-like) */
+    --primary: #007aff;
+    --primary-hover: #006ce0;
+    --success: #34c759;
+    --success-hover: #2eb050;
+    --danger: #ff3b30;
+    --danger-bg: #ffe5e5;
+    
+    /* Fundos e Bordas */
     --bg-color: #f5f5f7;
     --card-bg: rgba(255, 255, 255, 0.82);
     --input-bg: rgba(255, 255, 255, 0.9);
     --border-color: #d2d2d7;
-    --text-primary: #1d1d1f;
-    --text-secondary: #86868b;
+    
+    /* Tipografia */
+    --text-main: #1d1d1f;
+    --text-muted: #86868b;
 }
 
+/* --- RESET E BASE --- */
 * {
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-color);
-    margin: 0;
-    padding: 20px;
+    color: var(--text-main);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    color: var(--text-primary);
+    padding: 20px;
+    padding-bottom: 80px; /* Espaço para o rodapé do desenvolvedor */
 }
 
-/* --- CONTAINER GLASSMORPHISM --- */
+/* --- CONTAINER (GLASSMORPHISM) --- */
 .container {
     background: var(--card-bg);
     backdrop-filter: blur(25px);
@@ -46,21 +58,21 @@ body {
 }
 
 h2 {
-    margin-top: 0;
     font-weight: 600;
     font-size: 24px;
     letter-spacing: -0.5px;
+    margin-bottom: 8px;
 }
 
 .subtitle {
-    color: var(--text-secondary);
+    color: var(--text-muted);
     font-size: 14px;
     margin-bottom: 24px;
     line-height: 1.4;
 }
 
-/* --- FORMULÁRIOS E INPUTS --- */
-input, select {
+/* --- FORMULÁRIOS E INPUTS (Textos e Selects) --- */
+input:not([type="checkbox"]), select {
     width: 100%;
     padding: 14px 16px;
     margin-bottom: 14px;
@@ -68,21 +80,47 @@ input, select {
     border-radius: 12px;
     font-size: 16px;
     background: var(--input-bg);
-    color: var(--text-primary);
+    color: var(--text-main);
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     appearance: none;
 }
 
-input:focus, select:focus {
-    border-color: var(--apple-blue);
+input:not([type="checkbox"]):focus, select:focus {
+    border-color: var(--primary);
     box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
     background: #ffffff;
 }
 
+/* --- CHECKBOXES DE PERMISSÃO --- */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.checkbox-group input[type="checkbox"] {
+    appearance: auto;
+    -webkit-appearance: auto;
+    width: 20px;
+    height: 20px;
+    margin: 0 12px 0 0;
+    accent-color: var(--success);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.checkbox-group label {
+    font-size: 14px;
+    color: var(--text-main);
+    cursor: pointer;
+    user-select: none;
+}
+
 /* --- BOTÕES --- */
 button {
-    background-color: var(--apple-blue);
+    background-color: var(--primary);
     color: #ffffff;
     border: none;
     padding: 14px;
@@ -99,44 +137,21 @@ button {
     gap: 8px;
 }
 
-button:hover {
-    background-color: var(--apple-blue-hover);
-}
+button:hover { background-color: var(--primary-hover); }
+button:active { transform: scale(0.97); }
 
-button:active {
-    transform: scale(0.97);
-}
+.btn-novo { background-color: var(--success); }
+.btn-novo:hover { background-color: var(--success-hover); }
 
-/* Variantes de Botões */
-.btn-novo {
-    background-color: var(--apple-green);
-}
+.btn-secundario { background-color: #e5e5ea; color: var(--text-main); }
+.btn-secundario:hover { background-color: #d1d1d6; }
 
-.btn-novo:hover {
-    background-color: var(--apple-green-hover);
-}
-
-.btn-secundario {
-    background-color: #e5e5ea;
-    color: var(--text-primary);
-}
-
-.btn-secundario:hover {
-    background-color: #d1d1d6;
-}
-
-.btn-perigo {
-    background-color: var(--apple-red-bg);
-    color: var(--apple-red);
-}
-
-.btn-perigo:hover {
-    background-color: #ffd1d1;
-}
+.btn-perigo { background-color: var(--danger-bg); color: var(--danger); }
+.btn-perigo:hover { background-color: #ffd1d1; }
 
 .voltar-btn, .btn-voltar {
     background: none;
-    color: var(--apple-blue);
+    color: var(--primary);
     text-align: left;
     padding: 0;
     margin-bottom: 16px;
@@ -145,60 +160,14 @@ button:active {
     font-weight: 500;
     box-shadow: none;
 }
-
-.voltar-btn:hover, .btn-voltar:hover {
-    background: none;
-    text-decoration: underline;
-}
-
-/* --- CHECKBOXES E PERMISSÕES --- */
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
-    text-align: left;
-}
-
-.checkbox-group input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin: 0 12px 0 0;
-    accent-color: var(--apple-blue);
-    cursor: pointer;
-}
-
-.checkbox-group label {
-    font-size: 14px;
-    color: var(--text-primary);
-    cursor: pointer;
-    user-select: none;
-}
+.voltar-btn:hover, .btn-voltar:hover { background: none; text-decoration: underline; }
 
 /* --- ESTRUTURA DE LISTAS E CARDS DINÂMICOS --- */
-.lista-vazia {
-    margin-top: 15px;
-    text-align: left;
-    min-height: 120px;
-}
+.lista-vazia { margin-top: 15px; text-align: left; min-height: 120px; }
+.lista-vazia p { color: var(--text-muted); font-size: 14px; text-align: center; }
 
-.lista-vazia p {
-    color: var(--text-secondary);
-    font-size: 14px;
-    text-align: center;
-}
-
-.cabecalho-pasta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.botoes-acao {
-    display: flex;
-    gap: 8px;
-    margin-top: 15px;
-}
+.cabecalho-pasta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.botoes-acao { display: flex; gap: 8px; margin-top: 15px; }
 
 .card-item {
     background: #ffffff;
@@ -213,136 +182,18 @@ button:active {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .card-item:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* --- RODAPÉ --- */
-.assinatura-rodape {
-    position: fixed;
-    bottom: 16px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 12px;
-    color: var(--text-secondary);
-    font-weight: 500;
-    pointer-events: none;
-    letter-spacing: 0.3px;
+.info-detalhe {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
 }
 
-/* --- FORMATAÇÃO DE IMPRESSÃO (ESPELHO) --- */
-.print-only {
-    display: none;
-}
-
-@media print {
-    body {
-        background: #ffffff;
-        margin: 0;
-        padding: 0;
-    }
-    
-    .container, .hide-print, .assinatura-rodape {
-        display: none !important;
-    }
-    
-    .print-only {
-        display: flex !important;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        width: 100vw;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-    
-    .print-card {
-        border: 3px solid #233e60;
-        border-radius: 20px;
-        padding: 36px;
-        text-align: center;
-        width: 360px;
-        font-family: Arial, sans-serif;
-        page-break-inside: avoid;
-    }
-
-    .print-header {
-        font-size: 13px;
-        color: #8fa3b8;
-        font-weight: bold;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-    }
-
-    .print-title {
-        font-size: 38px;
-        color: #1e3a5f;
-        font-weight: bold;
-        margin: 12px 0;
-    }
-
-    .print-local-box {
-        background: #f0f4f8 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        padding: 16px;
-        border-radius: 12px;
-        font-size: 14px;
-        color: #333333;
-        margin-bottom: 20px;
-        text-align: left;
-        line-height: 1.6;
-        border: 1px solid #d1d9e6;
-    }
-
-    .print-qr-container img {
-        width: 170px;
-        height: 170px;
-    }
-
-    .print-footer {
-        font-size: 13px;
-        font-weight: bold;
-        color: #5a6b7c;
-        margin-top: 18px;
-    }
-}
-
-/* --- ADAPTAÇÃO RESPONSIVA --- */
-@media (max-width: 480px) {
-    body {
-        padding: 12px;
-    }
-
-    .container {
-        padding: 24px 18px;
-        border-radius: 20px;
-    }
-
-    h2 {
-        font-size: 21px;
-    }
-
-    input, select, button {
-        padding: 12px 14px;
-        font-size: 15px;
-    }
-}
-
-@media (min-width: 768px) {
-    .container {
-        max-width: 460px;
-        padding: 40px 36px;
-    }
-}
-
-/* =========================================
-   ASSINATURA DO DESENVOLVEDOR
-   ========================================= */
+/* --- ASSINATURA DO DESENVOLVEDOR --- */
 .developer-footer {
     position: fixed;
     bottom: 16px;
@@ -373,42 +224,76 @@ button:active {
     gap: 4px;
     transition: all 0.3s ease;
 }
+.wpp-link:hover { color: var(--success); transform: translateY(-1px); }
 
-.wpp-link:hover {
-    color: var(--success);
-    transform: translateY(-1px);
-}
-
-.wpp-icon {
-    display: inline-block;
-    font-size: 14px;
-    animation: pulseWpp 2s infinite;
-}
+.wpp-icon { display: inline-block; font-size: 14px; animation: pulseWpp 2s infinite; }
 
 @keyframes fadeInFooter {
     from { opacity: 0; bottom: -20px; }
     to { opacity: 1; bottom: 16px; }
 }
-
 @keyframes pulseWpp {
     0% { transform: scale(1); }
     50% { transform: scale(1.2) rotate(5deg); }
     100% { transform: scale(1); }
 }
 
+/* --- FORMATAÇÃO DE IMPRESSÃO (ESPELHO) --- */
+.print-only { display: none; }
+
 @media print {
-    .hide-print, .developer-footer { display: none !important; }
+    body { background: #ffffff; margin: 0; padding: 0; }
+    .container, .hide-print, .developer-footer { display: none !important; }
+    
+    .print-only {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0; left: 0;
+    }
+    
+    .print-card {
+        border: 3px solid #233e60;
+        border-radius: 20px;
+        padding: 36px;
+        text-align: center;
+        width: 360px;
+        font-family: Arial, sans-serif;
+        page-break-inside: avoid;
+    }
+
+    .print-header { font-size: 13px; color: #8fa3b8; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
+    .print-title { font-size: 38px; color: #1e3a5f; font-weight: bold; margin: 12px 0; }
+    
+    .print-local-box {
+        background: #f0f4f8 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        color: #333333;
+        margin-bottom: 20px;
+        text-align: left;
+        line-height: 1.6;
+        border: 1px solid #d1d9e6;
+    }
+
+    .print-qr-container img { width: 170px; height: 170px; }
+    .print-footer { font-size: 13px; font-weight: bold; color: #5a6b7c; margin-top: 18px; }
 }
 
-/* --- CORREÇÃO VISUAL DOS CHECKBOXES --- */
-input[type="checkbox"] {
-    appearance: auto !important;
-    -webkit-appearance: auto !important;
-    width: 20px !important;
-    height: 20px !important;
-    border-radius: 4px !important; /* Força o formato quadrado */
-    padding: 0 !important;
-    margin-bottom: 0 !important;
-    box-shadow: none !important;
-    cursor: pointer;
+/* --- ADAPTAÇÃO RESPONSIVA --- */
+@media (max-width: 480px) {
+    body { padding: 12px; padding-bottom: 70px; }
+    .container { padding: 24px 18px; border-radius: 20px; }
+    h2 { font-size: 21px; }
+    input:not([type="checkbox"]), select, button { padding: 12px 14px; font-size: 15px; }
+}
+
+@media (min-width: 768px) {
+    .container { max-width: 460px; padding: 40px 36px; }
 }
