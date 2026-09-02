@@ -7,12 +7,32 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    
+    <!-- TELA PÚBLICA (QR CODE) - ESCONDIDA POR PADRÃO -->
+    <div class="container" id="public-screen" style="display: none; max-width: 500px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <p class="subtitle" style="margin-bottom: 5px;">ARQUIVO INTELIGENTE</p>
+            <h2 id="pub-titulo-pasta" style="font-size: 32px; color: var(--primary);">Carregando...</h2>
+        </div>
+        <div class="card-item" style="flex-direction: column; align-items: flex-start; background: var(--bg-color); border: none; margin-bottom: 20px;">
+            <div id="pub-endereco" class="info-detalhe" style="color: var(--text-main); font-size: 14px;"></div>
+            <div id="pub-andar" class="info-detalhe" style="color: var(--text-main); font-size: 14px;"></div>
+            <div id="pub-caixa" class="info-detalhe" style="color: var(--text-main); font-size: 14px;"></div>
+            <div id="pub-obs" class="info-detalhe" style="color: var(--danger); font-weight: 600; display: none; margin-top: 10px;"></div>
+        </div>
+        <input type="text" id="pub-busca" placeholder="🔍 Buscar cliente, CPF ou processo..." onkeyup="filtrarListaPublica()">
+        <div id="pub-lista-clientes" style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 5px; margin-top: 15px;">
+            <p style="text-align: center; color: var(--text-muted);">Buscando documentos em tempo real...</p>
+        </div>
+        <button class="btn-secundario" style="margin-top: 15px;" onclick="window.location.href='/'">Acesso Restrito (Login)</button>
+    </div>
+
     <!-- 1. TELA DE LOGIN -->
     <div class="container" id="login-screen">
         <h2>Arquivo Inteligente</h2>
-        <p class="subtitle"></p>
+        <p class="subtitle">Acesso restrito. Identifique-se.</p>
         
-        <input type="text" id="login-user" placeholder="Usuário" onkeydown="verificarEnterLogin(event)">
+        <input type="text" id="login-user" placeholder="Usuário (ex: denis)" onkeydown="verificarEnterLogin(event)">
         <input type="password" id="senha" placeholder="Senha" onkeydown="verificarEnterLogin(event)">
         
         <button class="btn-novo" onclick="fazerLogin()">Entrar</button>
@@ -59,7 +79,6 @@
         <h2 id="titulo-pasta">PASTA-001</h2>
         <p class="subtitle" style="margin-bottom: 10px;">Gerencie os documentos contidos neste arquivo.</p>
         
-        <!-- Alerta de Observação da Pasta -->
         <p id="obs-pasta-atual" style="color: var(--danger); font-size: 14px; margin-bottom: 15px; font-weight: 600; display: none;"></p>
         
         <div style="display: flex; gap: 8px; margin-bottom: 15px;">
@@ -68,11 +87,19 @@
             <button class="btn-perigo" id="btn-excluir-pasta" onclick="excluirPasta()">🗑️ Excluir</button>
         </div>
 
-        <input type="text" id="busca-cliente-pasta" placeholder="🔍 Filtrar nesta pasta..." onkeyup="filtrarClientesDaPasta()">
+        <!-- Botão Fixado no Topo para Agilizar -->
+        <button class="btn-novo" style="margin-bottom: 15px; box-shadow: 0 4px 12px rgba(52,199,89,0.3);" onclick="abrirCadastroCliente()">+ Adicionar Documento</button>
+
+        <!-- Filtros e Ordenação -->
+        <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+            <input type="text" id="busca-cliente-pasta" placeholder="🔍 Filtrar..." onkeyup="filtrarClientesDaPasta()" style="margin-bottom: 0; flex: 1;">
+            <select id="ordenacao-clientes" onchange="filtrarClientesDaPasta()" style="margin-bottom: 0; width: auto; flex-shrink: 0; padding: 12px; font-size: 14px;">
+                <option value="cadastro">Ordem de Cadastro</option>
+                <option value="alfabetica">Ordem Alfabética (A-Z)</option>
+            </select>
+        </div>
 
         <div id="lista-clientes" style="margin-bottom: 20px;"></div>
-
-        <button class="btn-novo" onclick="abrirCadastroCliente()">+ Adicionar Cliente</button>
     </div>
 
     <!-- 5. EDITAR PASTA -->
@@ -190,10 +217,12 @@
         </div>
     </div>
 
+    <!-- SCRIPTS -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     
     <script src="js/config.js"></script>
+    <script src="js/publico.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/pastas.js"></script>
     <script src="js/clientes.js"></script>

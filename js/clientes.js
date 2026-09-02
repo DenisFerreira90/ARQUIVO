@@ -21,6 +21,9 @@ function abrirTelaPasta(nomeDaPasta) {
     const campoBusca = document.getElementById('busca-cliente-pasta');
     if (campoBusca) campoBusca.value = '';
 
+    const selectOrdenacao = document.getElementById('ordenacao-clientes');
+    if (selectOrdenacao) selectOrdenacao.value = 'cadastro';
+
     filtrarClientesDaPasta();
 }
 
@@ -29,13 +32,24 @@ function filtrarClientesDaPasta() {
     const termo = campoBusca ? campoBusca.value.toLowerCase() : '';
     const nomeDaPasta = document.getElementById('titulo-pasta').innerText;
     const divLista = document.getElementById('lista-clientes');
+    const ordenacao = document.getElementById('ordenacao-clientes') ? document.getElementById('ordenacao-clientes').value : 'cadastro';
     
-    const clientesFiltrados = memoriaDoSistema.clientes.filter(c => 
+    let clientesFiltrados = memoriaDoSistema.clientes.filter(c => 
         c.pasta === nomeDaPasta && 
         (c.nome.toLowerCase().includes(termo) || 
          c.cpf.includes(termo) || 
          (c.processo && c.processo.toLowerCase().includes(termo)))
     );
+
+    if (ordenacao === 'alfabetica') {
+        clientesFiltrados.sort((a, b) => a.nome.localeCompare(b.nome));
+    } else {
+        clientesFiltrados.sort((a, b) => {
+            const timeA = (a.dataCriacao && typeof a.dataCriacao.toDate === 'function') ? a.dataCriacao.toDate().getTime() : Date.now();
+            const timeB = (b.dataCriacao && typeof b.dataCriacao.toDate === 'function') ? b.dataCriacao.toDate().getTime() : Date.now();
+            return timeA - timeB; 
+        });
+    }
     
     renderizarListaClientesHtml(clientesFiltrados, divLista);
 }
@@ -44,7 +58,7 @@ function renderizarListaClientesHtml(clientes, divLista) {
     if (!divLista) return;
 
     if (clientes.length === 0) {
-        divLista.innerHTML = '<p style="text-align: center; color: #86868b; margin: 20px 0;">Nenhum cliente encontrado.</p>';
+        divLista.innerHTML = '<p style="text-align: center; color: #86868b; margin: 20px 0;">Nenhum documento encontrado nesta pasta.</p>';
         return;
     }
     
@@ -195,7 +209,7 @@ function salvarEdicaoCliente() {
 }
 
 function excluirCliente(idFirebase, nome) {
-    if (confirm(`Excluir o cliente ${nome}?`)) {
+    if (confirm(`Excluir o documento do(a) ${nome}?`)) {
         db.collection("clientes").doc(idFirebase).update({ 
             status: "EXCLUÍDO", 
             excluidoPor: usuarioLogado ? usuarioLogado.login : 'sistema',

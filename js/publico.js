@@ -1,17 +1,8 @@
-// Pega o ID da pasta na URL (ex: pasta.html?id=PASTA-001)
-const urlParams = new URLSearchParams(window.location.search);
-const pastaId = urlParams.get('id');
 let clientesDaPasta = [];
 
-if (!pastaId) {
-    document.getElementById('pub-titulo-pasta').innerText = "Pasta não encontrada";
-    document.getElementById('pub-lista-clientes').innerHTML = "";
-} else {
-    carregarDadosDaPasta();
-}
+function carregarDadosPublicos(pastaId) {
+    pastaId = decodeURIComponent(pastaId).toUpperCase();
 
-function carregarDadosDaPasta() {
-    // 1. Carrega os detalhes da pasta física
     db.collection("pastas").doc(pastaId).get().then(doc => {
         if (doc.exists) {
             const p = doc.data();
@@ -26,10 +17,10 @@ function carregarDadosDaPasta() {
             }
         } else {
             document.getElementById('pub-titulo-pasta').innerText = "Pasta Inativa ou Excluída";
+            document.getElementById('pub-lista-clientes').innerHTML = "";
         }
     });
 
-    // 2. Escuta os clientes em tempo real (onSnapshot)
     db.collection("clientes")
       .where("pasta", "==", pastaId)
       .where("status", "==", "ATIVO")
@@ -38,7 +29,7 @@ function carregarDadosDaPasta() {
           snapshot.forEach(doc => {
               clientesDaPasta.push(doc.data());
           });
-          filtrarListaPublica(); // Renderiza a lista na tela
+          filtrarListaPublica(); 
       });
 }
 
@@ -67,7 +58,7 @@ function filtrarListaPublica() {
         <div class="card-item" style="flex-direction: column; align-items: flex-start; cursor: default;">
             <div style="font-weight: 600; color: var(--text-main); font-size: 16px;">${c.nome}</div>
             <div class="info-detalhe">CPF: ${c.cpf} | Processo: ${c.processo || 'N/I'}</div>
-            <div class="info-detalhe">Data: ${dataFormatada}</div>
+            <div class="info-detalhe">Data Cad.: ${dataFormatada}</div>
             ${obsHtml}
         </div>`;
     });
